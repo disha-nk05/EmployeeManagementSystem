@@ -1,0 +1,102 @@
+﻿@model IEnumerable<EmployeeManagementWeb.Models.Employee>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<form method="get" class="mb-3 d-flex">
+    <input type="text" name="search" class="form-control me-2" placeholder="Search employee..." />
+    <button type="submit" class="btn btn-success">Search</button>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Dob)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Salary)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Dob)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Salary)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<h3 class="mt-5">Salary Distribution</h3>
+<canvas id="salaryChart" height="120"></canvas>
+
+<script>
+    console.log("chart running");
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        var labels = [];
+        var data = [];
+
+        @foreach (var item in Model)
+        {
+                <text>
+                        labels.push("@item.Name");
+                        data.push(@item.Salary);
+                </text>
+        }
+
+        var ctx = document.getElementById('salaryChart');
+
+        if (ctx) {
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Salary',
+                        data: data,
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)'
+                    }]
+                }
+            });
+        } else {
+            console.log("canvas not found");
+        }
+
+    });
+</script>

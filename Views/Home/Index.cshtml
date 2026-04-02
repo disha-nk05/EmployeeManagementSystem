@@ -1,0 +1,55 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h2 class="mb-4">Dashboard</h2>
+
+<div class="row">
+
+    <div class="col-md-4">
+        <div class="card shadow p-3 mb-4">
+            <h5>Total Employees</h5>
+            <h2>@ViewBag.TotalEmployees</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow p-3 mb-4">
+            <h5>Average Salary</h5>
+            <h2>₹ @ViewBag.AvgSalary</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow p-3 mb-4">
+            <h5>Highest Salary</h5>
+            <h2>₹ @ViewBag.MaxSalary</h2>
+        </div>
+    </div>
+
+</div>
+
+<div class="card p-4 shadow">
+    <h4>Salary Overview</h4>
+    <canvas id="homeChart" height="120"></canvas>
+</div>
+
+<script>
+    console.log("home chart running");
+
+    var labels = @Html.Raw(ViewBag.Names);
+    var data = @Html.Raw(ViewBag.Salaries);
+
+    new Chart(document.getElementById('homeChart'), {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Salary',
+                data: data,
+                borderColor: 'blue',
+                fill: false
+            }]
+        }
+    });
+</script>
